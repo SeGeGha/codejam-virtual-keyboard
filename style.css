@@ -1,0 +1,164 @@
+html {
+  font-size: 10px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;    
+}
+
+.textarea {
+  position: absolute; 
+  top: 30px; 
+  width: 500px;  
+  height: 200px;  
+  resize: none;
+}
+
+.textarea:hover {
+  cursor: no-drop;
+}
+
+.not {
+  user-select: none;
+}
+
+.keyboard {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 5px 0;
+  background: #4a545c;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  transition: bottom 0.4s;
+}
+
+.keyboard__keys {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  width: 910px;
+}
+
+.keyboard__key {
+  display: inline-flex;
+  justify-content: center;
+  position: relative;
+  margin: 5px;
+  padding: 0;
+  height: 45px;
+  width: 50px; 
+  border-radius: 4px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  box-shadow: 3px 3px 3px 2px rgba(0, 0, 0, 0.5);
+  font-size: 1.2rem;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.key_hover,
+.keyboard__key:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.key_pressed {
+  box-shadow: none;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.key_xs-wide {
+  width: 60px;
+}
+
+.key_small-wide {
+  width: 90px;
+}
+
+.key_medium-wide {
+  width: 110px;
+}
+
+.key_large-wide {
+  width: 120px;
+}
+
+.key_xl-wide {
+  width: 140px;
+}
+
+.key_xxl-wide {
+  width: 360px;
+}
+
+.key_language {
+  background: rgb(32, 178, 170, 0.5);  
+}
+
+.key_language:hover {
+  background: rgb(32, 178, 170, 0.35);  
+}
+
+.key_activated::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+}
+
+.key_active::after {
+  background: #08ff00;
+} 
+
+.key_dark {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: calc(50% - 135px);
+  left: 0;
+  width: 300px;
+  height: 175px;
+  background: aliceblue;
+  box-shadow: 2px 2px 15px 1px rgba(0, 0, 0, 0.5);
+  font-family: cursive;
+  font-size: 2.5rem;
+  transition: all 0.5s;
+}
+
+.info_active {
+  left: -250px;
+}
+
+.info__title {
+  width: 50px;
+  height: 175px;
+  font-size: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.info__title:hover {
+  cursor: pointer;
+  color: red;
+}
+
+.info__text {
+  width: 250px;
+}
+
+
