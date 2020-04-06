@@ -905,3 +905,72 @@ class Keyboard {
   }
 }
 
+window.addEventListener('DOMContentLoaded', () => {
+  const keyboard = new Keyboard();
+  keyboard.init();
+
+  const textArea = document.createElement('textarea');
+
+  textArea.classList.add('textarea');
+  textArea.setAttribute('autofocus', 'true');
+
+  document.body.prepend(textArea);
+
+  const information = document.createElement('div');
+  const informationText = document.createElement('div');
+  const informationTitle = document.createElement('div');
+
+  information.classList.add('info');
+  informationText.classList.add('info__text');
+  informationTitle.classList.add('info__title');
+
+  informationText.textContent = 'Made on Windows. Change language - Alt + Shift or click on button "ENG" ("RUS")';
+  informationTitle.textContent = '!';
+
+  information.append(informationText, informationTitle);
+
+  document.body.append(information);
+
+  setTimeout(() => {
+    document.querySelector('.info').classList.toggle('info_active');
+  }, 5000);
+
+  textArea.addEventListener('blur', () => {
+    textArea.focus();
+  });
+
+  textArea.addEventListener('mousedown', (event) => { // Not change textarea on left button click
+    event.preventDefault();
+  });
+
+  textArea.addEventListener('contextmenu', (event) => { // Not change textarea on right button click
+    event.preventDefault();
+  });
+
+  window.addEventListener('keydown', (event) => {
+    event.preventDefault();
+    keyboard.keyPress(event);
+  });
+
+  window.addEventListener('keyup', (event) => {
+    keyboard.keyPress(event, true);
+  });
+
+  keyboard.keysContainer.addEventListener('mousedown', (event) => {
+    if (event.target.dataset.keycode === '16') {
+      keyboard.keyPress(event, event.target.classList.contains('key_pressed'));
+    } else {
+      keyboard.keyPress(event);
+    }
+  });
+
+  keyboard.keysContainer.addEventListener('mouseup', (event) => {
+    if (event.target.dataset.keycode !== '16') {
+      keyboard.keyPress(event, true);
+    }
+  });
+
+  document.querySelector('.info__title').addEventListener('click', () => {
+    document.querySelector('.info').classList.toggle('info_active');
+  });
+});
