@@ -604,6 +604,8 @@ const keyDirectory = {
   },
 };
 
+const [english, russian] = ['engKeyName', 'rusKeyName'];
+
 class Keyboard {
   constructor() {
     this.main = null;
@@ -642,13 +644,13 @@ class Keyboard {
 
   createKeys() {
     try {
-      if (localStorage.getItem('language') === 'engKeyName' || localStorage.getItem('language') === 'rusKeyName') {
+      if (localStorage.getItem('language') === english || localStorage.getItem('language') === russian) {
         this.language = localStorage.getItem('language');
       } else {
-        this.language = 'engKeyName';
+        this.language = english;
       }
     } catch (err) {
-      this.language = 'engKeyName';
+      this.language = english;
     }
 
     const fragment = document.createDocumentFragment();
@@ -697,10 +699,12 @@ class Keyboard {
         case 'keycode-46':
           this.createButtonStyle.call(keyElement, 'Del');
           break;
-        case 'language':
+        case 'language': {
+          const langButtonName = this.language.substring(0, 3).toUpperCase();
           keyElement.setAttribute('data-keycode', key);
-          this.createButtonStyle.call(keyElement, this.language.substring(0, 3).toUpperCase(), 'key_language');
+          this.createButtonStyle.call(keyElement, langButtonName, 'key_language');
           break;
+        }
         default:
           keyElement.textContent = keyDirectory[key][this.language].standardKeyName;
           break;
@@ -860,11 +864,11 @@ class Keyboard {
 
   changeLanguage() {
     switch (this.language) {
-      case 'engKeyName':
-        this.language = 'rusKeyName';
+      case english:
+        this.language = russian;
         break;
-      case 'rusKeyName':
-        this.language = 'engKeyName';
+      case russian:
+        this.language = english;
         break;
       default:
         break;
@@ -883,20 +887,22 @@ class Keyboard {
       const button = item;
 
       if (button.getAttribute('data-get-value') === 'true') {
+        const keyMap = keyDirectory[`keycode-${button.dataset.keycode}`][this.language];
+
         switch (code) {
           case 'true, false, false':
-            button.textContent = keyDirectory[`keycode-${button.dataset.keycode}`][this.language].shiftKeyName;
+            button.textContent = keyMap.shiftKeyName;
             break;
           case 'true, false, true':
-            button.textContent = keyDirectory[`keycode-${button.dataset.keycode}`][this.language].shiftKeyName.toLowerCase();
+            button.textContent = keyMap.shiftKeyName.toLowerCase();
             break;
           case 'true, true, true':
           case 'false, true, true':
           case 'false, false, true':
-            button.textContent = keyDirectory[`keycode-${button.dataset.keycode}`][this.language].standardKeyName.toUpperCase();
+            button.textContent = keyMap.standardKeyName.toUpperCase();
             break;
           default:
-            button.textContent = keyDirectory[`keycode-${button.dataset.keycode}`][this.language].standardKeyName;
+            button.textContent = keyMap.standardKeyName;
             break;
         }
       }
