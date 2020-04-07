@@ -643,15 +643,7 @@ class Keyboard {
   }
 
   createKeys() {
-    try {
-      if (localStorage.getItem('language') === english || localStorage.getItem('language') === russian) {
-        this.language = localStorage.getItem('language');
-      } else {
-        this.language = english;
-      }
-    } catch (err) {
-      this.language = english;
-    }
+    this.language = localStorage.getItem('k-boardLanguage') ? localStorage.getItem('k-boardLanguage') : english;
 
     const fragment = document.createDocumentFragment();
 
@@ -874,7 +866,7 @@ class Keyboard {
         break;
     }
 
-    localStorage.setItem('language', this.language);
+    localStorage.setItem('k-boardLanguage', this.language);
     this.keys[this.keys.length - 1].textContent = this.language.substring(0, 3).toUpperCase();
 
     this.switchValueKeys();
