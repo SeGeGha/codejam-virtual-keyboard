@@ -729,46 +729,25 @@ class Keyboard {
       keyPress = keysArray.find((key) => +key.dataset.keycode === event.keyCode);
     }
 
-    function carriageMove(direction, number = 1) {
-      switch (direction) {
-        case 'left':
-          textArea.selectionStart = (textPosition - number < 0) ? 0 : textPosition - number;
-          break;
-        case 'top':
-          textArea.selectionStart = 0;
-          break;
-        case 'right':
-          textArea.selectionStart = textPosition + number;
-          break;
-        case 'down':
-          textArea.selectionStart = textArea.value.length;
-          break;
-        default:
-          break;
-      }
-      textArea.selectionEnd = textArea.selectionStart;
-    }
-
     function changeText([startPosition, deleteCount, newText], direction, number) {
       const textValue = textArea.value.split('');
 
       textValue.splice(startPosition, deleteCount, newText);
-
       textArea.value = textValue.join('');
 
-      carriageMove(direction, number);
+      this.carriageMove.call(textArea, direction, textPosition, number);
     }
 
     if (keyPress && !keyUp) {
       switch (keyPress.dataset.keycode) {
         case '8': // Backspace key
-          changeText([textPosition - 1, 1], 'left');
+          changeText.apply(this, [[textPosition - 1, 1], 'left']);
           break;
         case '9': // Tab key
-          changeText([textPosition, 0, '  '], 'right', 2);
+          changeText.apply(this, [[textPosition, 0, '  '], 'right', 2]);
           break;
         case '13': // Enter key
-          changeText([textPosition, 0, '\n'], 'right');
+          changeText.apply(this, [[textPosition, 0, '\n'], 'right']);
           break;
         case '16': // Shift key
           this.property.shift.press = true;
@@ -805,29 +784,29 @@ class Keyboard {
           }
           break;
         case '32': // Space key
-          changeText([textPosition, 0, ' '], 'right');
+          changeText.apply(this, [[textPosition, 0, ' '], 'right']);
           break;
         case '37': // Left arrow-key
-          carriageMove('left');
+          changeText.apply(this, [[], 'left']);
           break;
         case '38': // Up arrow-key
-          carriageMove('top');
+          changeText.apply(this, [[], 'top']);
           break;
         case '39': // Right arrow-key
-          carriageMove('right');
+          changeText.apply(this, [[], 'right']);
           break;
         case '40': // Down arrow-key
-          carriageMove('down');
+          changeText.apply(this, [[], 'down']);
           break;
         case '46': // Delete key
-          changeText([textPosition, 1], 'left', 0);
+          changeText.apply(this, [[textPosition, 1], 'left', 0]);
           break;
         case 'language':
           this.changeLanguage();
           break;
         default:
           if (keyPress.dataset.getValue === 'true') {
-            changeText([textPosition, 0, keyPress.textContent], 'right');
+            changeText.apply(this, [[textPosition, 0, keyPress.textContent], 'right']);
           }
           break;
       }
@@ -857,6 +836,26 @@ class Keyboard {
           break;
       }
     }
+  }
+
+  carriageMove(direction, currentPosition, step = 1) {
+    switch (direction) {
+      case 'left':
+        this.selectionStart = (currentPosition - step < 0) ? 0 : currentPosition - step;
+        break;
+      case 'top':
+        this.selectionStart = 0;
+        break;
+      case 'right':
+        this.selectionStart = currentPosition + step;
+        break;
+      case 'down':
+        this.selectionStart = this.value.length;
+        break;
+      default:
+        break;
+    }
+    this.selectionEnd = this.selectionStart;
   }
 
   changeLanguage() {
