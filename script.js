@@ -661,50 +661,45 @@ class Keyboard {
       keyElement.setAttribute('data-get-value', keyDirectory[key].getValue);
       keyElement.classList.add('keyboard__key');
 
-      function createButtonStyle(nameButton, ...className) {
-        keyElement.classList.add(...className);
-        keyElement.textContent = nameButton;
-      }
-
       switch (key) {
         case 'keycode-8':
-          createButtonStyle('Backspace', 'key_large-wide');
+          this.createButtonStyle.call(keyElement, 'Backspace', 'key_large-wide');
           break;
         case 'keycode-9':
-          createButtonStyle('Tab', 'key_xs-wide');
+          this.createButtonStyle.call(keyElement, 'Tab', 'key_xs-wide');
           break;
         case 'keycode-20':
-          createButtonStyle('Caps Lock', 'key_small-wide', 'key_activated');
+          this.createButtonStyle.call(keyElement, 'Caps Lock', 'key_small-wide', 'key_activated');
           break;
         case 'keycode-13':
-          createButtonStyle('Enter', 'key_xl-wide');
+          this.createButtonStyle.call(keyElement, 'Enter', 'key_xl-wide');
           break;
         case 'keycode-left-16':
-          createButtonStyle('Shift', 'key_large-wide');
+          this.createButtonStyle.call(keyElement, 'Shift', 'key_large-wide');
           break;
         case 'keycode-right-16':
-          createButtonStyle('Shift', 'key_medium-wide');
+          this.createButtonStyle.call(keyElement, 'Shift', 'key_medium-wide');
           break;
         case 'keycode-32':
-          createButtonStyle('Space', 'key_xxl-wide');
+          this.createButtonStyle.call(keyElement, 'Space', 'key_xxl-wide');
           break;
         case 'keycode-left-17':
         case 'keycode-right-17':
-          createButtonStyle('Ctrl');
+          this.createButtonStyle.call(keyElement, 'Ctrl');
           break;
         case 'keycode-left-18':
         case 'keycode-right-18':
-          createButtonStyle('Alt');
+          this.createButtonStyle.call(keyElement, 'Alt');
           break;
         case 'keycode-91':
-          createButtonStyle('Win');
+          this.createButtonStyle.call(keyElement, 'Win');
           break;
         case 'keycode-46':
-          createButtonStyle('Del');
+          this.createButtonStyle.call(keyElement, 'Del');
           break;
         case 'language':
           keyElement.setAttribute('data-keycode', key);
-          createButtonStyle(this.language.substring(0, 3).toUpperCase(), 'key_language');
+          this.createButtonStyle.call(keyElement, this.language.substring(0, 3).toUpperCase(), 'key_language');
           break;
         default:
           keyElement.textContent = keyDirectory[key][this.language].standardKeyName;
@@ -713,6 +708,11 @@ class Keyboard {
       fragment.appendChild(keyElement);
     });
     return fragment;
+  }
+
+  createButtonStyle(nameButton, ...className) {
+    this.classList.add(...className);
+    this.textContent = nameButton;
   }
 
   keyPress(event, keyUp = false) {
